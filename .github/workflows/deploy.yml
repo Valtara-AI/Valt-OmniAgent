@@ -1,0 +1,150 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run TypeScript check
+        run: npx tsc --noEmit
+      
+      - name: Run linter
+        run: npm run lint || echo "Linting completed with warnings"
+      
+      - name: Build application
+        run: npm run build
+      
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: .next
+          retention-days: 1
+
+  deploy:
+    name: Deploy to Server
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: .next
+      
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+      
+      - name: Create deployment archive
+        run: |
+          tar -czf deploy.tar.gz \
+            .next \
+            public \
+            package.json \
+            package-lock.json \
+            next.config.js \
+            ecosystem.config.js \
+            .env.production
+      
+      - name: Upload to server
+        run: |
+          scp -i ~/.ssh/deploy_key deploy.tar.gz root@${{ secrets.SERVER_IP }}:/var/www/valt-omniagent/
+      
+      - name: Deploy on server
+        run: |
+          ssh -i ~/.ssh/deploy_key root@${{ secrets.SERVER_IP }} << 'EOF'
+            cd /var/www/valt-omniagent
+            
+            # Backup current deployment
+            if [ -d ".next" ]; then
+              timestamp=$(date +%Y%m%d_%H%M%S)
+              mkdir -p backups
+              tar -czf backups/backup_$timestamp.tar.gz .next package.json || true
+              
+              # Keep only last 5 backups
+              cd backups && ls -t | tail -n +6 | xargs -r rm -f && cd ..
+            fi
+            
+            # Extract new version
+            tar -xzf deploy.tar.gz
+            
+            # Install dependencies
+            npm ci --production
+            
+            # Restart PM2
+            pm2 restart valt-omniagent || pm2 start ecosystem.config.js
+            pm2 save
+            
+            # Clean up
+            rm deploy.tar.gz
+            
+            echo "Deployment completed successfully!"
+          EOF
+      
+      - name: Health check
+        run: |
+          sleep 10
+          curl -f https://omni.valtara.ai || exit 1
+      
+      - name: Notify deployment status
+        if: always()
+        run: |
+          if [ ${{ job.status }} == 'success' ]; then
+            echo "✅ Deployment successful!"
+          else
+            echo "❌ Deployment failed!"
+          fi
+
+  backup:
+    name: Daily Backup
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    
+    steps:
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+      
+      - name: Create backup
+        run: |
+          ssh -i ~/.ssh/deploy_key root@${{ secrets.SERVER_IP }} << 'EOF'
+            /root/scripts/backup.sh
+          EOF
+      
+      - name: Verify backup
+        run: |
+          ssh -i ~/.ssh/deploy_key root@${{ secrets.SERVER_IP }} << 'EOF'
+            ls -lh /var/backups/valt-omniagent/ | tail -5
+          EOF

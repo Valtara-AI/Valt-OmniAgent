@@ -1,0 +1,54 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Next.js
+.next/
+out/
+dist/
+
+# Build outputs
+/.vercel/
+/.firebase/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.production
+.env.production.local
+
+# Logs
+logs/
+*.log
+*.tgz
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+
+# Keys and certs (do NOT commit private keys)
+ubuntu-ky.pem
+*.pem
+*.key
+*.crt
+
+# Coverage
+coverage/
+
+# Misc
+*.lock
+*.sqlite
+/.cache/
+.turbo/
+
+# Local IDE / tooling files
+.envrc
+/.envrc
