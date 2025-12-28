@@ -52,3 +52,6 @@ coverage/
 # Local IDE / tooling files
 .envrc
 /.envrc
+
+deploy.tar.gz
+*.tar.gz
