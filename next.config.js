@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // ❌ NO TARGET HERE. Vercel handles this automatically now.
+  // We removed the 'target' line entirely to escape Legacy Mode
   images: {
     unoptimized: true,
   },
