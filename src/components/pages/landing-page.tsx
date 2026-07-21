@@ -15,8 +15,8 @@ const coreFeatures = [
   {
     icon: MessageSquare,
     title: "Omni-Channel Outreach",
-    description: "Orchestrates coordinated outbound campaigns across phone, email, and SMS channels with intelligent timing and personalization.",
-    highlight: "Orchestrate phone + email/SMS outreach"
+    description: "Runs outbound campaigns across phone, email, and SMS on a timed sequence, so a missed call is followed by an email or text — not silence.",
+    highlight: "Coordinated phone + email/SMS outreach"
   },
   {
     icon: Bot,
@@ -33,8 +33,8 @@ const coreFeatures = [
   {
     icon: Target,
     title: "KPI Dashboards & ROI Tracking",
-    description: "Comprehensive dashboards with real-time KPIs, conversion tracking, revenue attribution, and ROI visibility for data-driven decisions.",
-    highlight: "Complete visibility & ROI tracking"
+    description: "Tracks reactivation rate, call-to-meeting ratio, and revenue per reactivation in one dashboard, updated as calls happen.",
+    highlight: "Reactivation rate, call-to-meeting ratio & revenue tracked live"
   }
 ]
 
@@ -71,15 +71,16 @@ export function LandingPage({ onGetDemo, onAbout, onViewDashboard }: LandingPage
         
         <div className="relative max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            AI-Powered{" "}
+            Dormant Leads Don't Call Themselves Back.{" "}
             <span className="gradient-primary bg-clip-text text-transparent">
-              Lead Reactivation Agent
+              Valt OmniAgent Does.
             </span>
           </h1>
-          
+
           <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-            Transform dormant leads into active members with intelligent database scanning, 
-            omni-channel outreach orchestration, and AI-assisted calling designed specifically for fitness studios.
+            It scans your Mindbody, Zen Planner, or ClubReady database for lapsed and cancelled
+            members, scores who's worth reaching, and runs the outreach — calls with live AI-assisted
+            scripts, email, and SMS — so your front desk isn't chasing cold lists by hand.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -97,16 +98,16 @@ export function LandingPage({ onGetDemo, onAbout, onViewDashboard }: LandingPage
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 max-w-3xl mx-auto">
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">85%</div>
-              <div className="text-sm text-muted-foreground">Reactivation Rate</div>
+              <div className="text-3xl font-bold text-primary mb-2">3</div>
+              <div className="text-sm text-muted-foreground">CRMs synced — Mindbody, Zen Planner, ClubReady</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-accent mb-2">3.2x</div>
-              <div className="text-sm text-muted-foreground">ROI Improvement</div>
+              <div className="text-3xl font-bold text-accent mb-2">3</div>
+              <div className="text-sm text-muted-foreground">Channels in one workflow — phone, email, SMS</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold gradient-primary bg-clip-text text-transparent mb-2">24/7</div>
-              <div className="text-sm text-muted-foreground">AI Assistant</div>
+              <div className="text-3xl font-bold gradient-primary bg-clip-text text-transparent mb-2">&lt;2s</div>
+              <div className="text-sm text-muted-foreground">Target AI response time on live calls</div>
             </div>
           </div>
         </div>
@@ -117,10 +118,10 @@ export function LandingPage({ onGetDemo, onAbout, onViewDashboard }: LandingPage
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">
-              What Valt OmniAgent Will Do
+              What Valt OmniAgent Actually Does
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Five core capabilities that transform your dormant leads into active, paying members
+              Five things it does with your dormant lead list, end to end
             </p>
           </div>
 
@@ -161,7 +162,7 @@ export function LandingPage({ onGetDemo, onAbout, onViewDashboard }: LandingPage
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-2xl font-bold mb-4">
-              Plus Additional Features
+              Also Included
             </h2>
           </div>
 
@@ -202,21 +203,21 @@ export function LandingPage({ onGetDemo, onAbout, onViewDashboard }: LandingPage
               Ready to Reactivate Your Leads?
             </h2>
             <p className="text-lg opacity-90 mb-8">
-              Join hundreds of fitness studios already growing their revenue with AI-powered lead reactivation
+              Book a walkthrough of how Valt OmniAgent scores dormant leads and runs the outreach
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 variant="secondary"
-                className="border-blue text-white hover:bg-white/10 btn-press"
+                className="bg-white/10 border border-white/40 text-white hover:bg-white/20 btn-press"
                 onClick={onGetDemo}
               >
-                Start Free Trial
+                Get Demo
               </Button>
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 variant="outline"
-                className="border-white text-white hover:bg-white/10 btn-press"
+                className="bg-transparent border-white text-white hover:bg-white/10 btn-press"
                 onClick={onGetDemo}
               >
                 Schedule Demo
