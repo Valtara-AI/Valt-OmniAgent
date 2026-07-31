@@ -163,7 +163,7 @@ export function Layout({ children, currentPage, onPageChange, isAuthenticated }:
               <div className="border-t border-border mt-8 pt-8">
                 <div className="flex flex-col md:flex-row justify-between items-center">
                   <div className="text-sm text-muted-foreground mb-4 md:mb-0">
-                    © 2025 Valt Technologies Inc. All rights reserved.
+                    © 2025 Valtara Inc. All rights reserved.
                   </div>
                   <div className="flex items-center space-x-4">
                     <span className="text-xs text-muted-foreground">Theme:</span>
